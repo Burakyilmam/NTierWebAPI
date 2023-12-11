@@ -71,6 +71,68 @@ namespace WebAPI.Controllers
                 return NotFound("Kitap bulunmamaktadır.");
             }
         }
+        [HttpPost]
+        public IActionResult Add(Book book)
+        {
+
+            var existingBook = _dataContext.Books.FirstOrDefault(s => s.Id == book.Id);
+            if (existingBook != null)
+            {
+                return Conflict($"ID değeri {book.Id} olan kitap zaten mevcut.");
+            }
+            var categoryId = _dataContext.Categories.FirstOrDefault(x => x.Id == book.CategoryId);
+            var writerId = _dataContext.Writers.FirstOrDefault(x => x.Id == book.WriterId);
+            if (categoryId == null && writerId == null)
+            {
+                return Conflict($"Kategori ve yazar bulunmamaktadır.");
+            }
+            if (categoryId == null)
+            {
+                return Conflict($"Kategori bulunmamaktadır.");
+            }
+            else if (writerId == null)
+            {
+                return Conflict($"Yazar bulunmamaktadır.");
+            }
+            else
+            {
+                _bookService.Add(book);
+                return Ok("Kitap başarıyla eklendi.");
+            }
+        }
+        [HttpPut]
+        public IActionResult Update(string name, decimal price, int categoryId, int writerId, int id)
+        {
+            var value = _bookService.Get(id);
+            var existcategoryId = _dataContext.Categories.FirstOrDefault(x => x.Id == categoryId);
+            var existwriterId = _dataContext.Writers.FirstOrDefault(x => x.Id == writerId);
+            if (existcategoryId == null && existwriterId == null)
+            {
+                return Conflict($"Kategori ve yazar bulunmamaktadır.");
+            }
+            if (existcategoryId == null)
+            {
+                return Conflict($"Kategori bulunmamaktadır.");
+            }
+            if (existwriterId == null)
+            {
+                return Conflict($"Yazar bulunmamaktadır.");
+            }
+            if (value != null)
+            {
+                value.Name = name;
+                value.Price = price;
+                value.WriterId = writerId;
+                value.CategoryId = categoryId;
+                _bookService.Update(value);
+                return Ok($"ID değeri {value.Id} olan kitap başarıyla güncellendi.");
+            }
+
+            else
+            {
+                return Conflict($"ID değeri {id} olan kitap bulunmamaktadır.");
+            }
+        }
     }
 
 }
