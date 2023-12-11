@@ -41,6 +41,36 @@ namespace WebAPI.Controllers
             }
             return Ok(book);
         }
+        [HttpDelete("DeleteById")]
+        public IActionResult DeleteById(int id)
+        {
+            var value = _bookService.Get(id);
+            if (value != null)
+            {
+                _bookService.Delete(value);
+                return Ok($"ID değeri {value.Id} olan kitap başarıyla silindi.");
+            }
+            else
+            {
+                return NotFound("Kitap bulunmamaktadır.");
+            }
+
+        }
+        [HttpDelete("DeleteAll")]
+        public IActionResult DeleteAll()
+        {
+            var value = _dataContext.Books.ToList();
+            if (value != null)
+            {
+                _dataContext.RemoveRange(value);
+                _dataContext.SaveChanges();
+                return Ok($"kitaplar başarıyla silindi.");
+            }
+            else
+            {
+                return NotFound("Kitap bulunmamaktadır.");
+            }
+        }
     }
 
 }

@@ -27,6 +27,7 @@ namespace Business.Concrete
             _genericDal.Delete(t);
         }
 
+
         public T Get(int id)
         {
             return _genericDal.GetId(id);
