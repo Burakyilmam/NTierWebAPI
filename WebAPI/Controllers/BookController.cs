@@ -64,7 +64,7 @@ namespace WebAPI.Controllers
             {
                 _dataContext.RemoveRange(value);
                 _dataContext.SaveChanges();
-                return Ok($"kitaplar başarıyla silindi.");
+                return Ok("Kitaplar başarıyla silindi.");
             }
             else
             {
