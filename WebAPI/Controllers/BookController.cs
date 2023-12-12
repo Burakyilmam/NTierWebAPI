@@ -30,7 +30,7 @@ namespace WebAPI.Controllers
             return Ok(value);
         }
 
-        [HttpGet("GetBook/{id}")]
+        [HttpGet("GetBook")]
         public IActionResult GetBook(int id)
         {
             var book = _bookService.Get(id);

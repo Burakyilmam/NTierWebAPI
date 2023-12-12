@@ -27,10 +27,6 @@ namespace WebAPI
             builder.Services.AddScoped(typeof(IGenericDal<>), typeof(GenericRepository<>));
             builder.Services.AddScoped(typeof(IGenericService<>), typeof(GenericManager<>));
 
-
-
-
-
             var app = builder.Build();
 
             if (app.Environment.IsDevelopment())
